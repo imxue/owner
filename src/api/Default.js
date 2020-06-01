@@ -24,10 +24,18 @@ export function logout() {
     method: "POST"
   });
 }
-export function DeleteBar(id) {
+export function disable(data) {
   return request({
-    url: `/owner/bar_owner/${id}`,
-    method: "DELETE"
+    url: `/owner/bar_owner/disable`,
+    method: "post",
+    data
+  });
+}
+export function enable(data) {
+  return request({
+    url: `/owner/bar_owner/enable`,
+    method: "post",
+    data
   });
 }
 export function resetPassword(info) {
@@ -156,7 +164,16 @@ export function cancelTrustNetbar(id) {
     data
   });
 }
-
+/**
+ * 解绑
+ */
+export function unbind(data) {
+  return request({
+    url: `/diskless/bar_ext/unbind`,
+    method: "post",
+    data
+  });
+}
 /**
  * 修改网吧密码
  */

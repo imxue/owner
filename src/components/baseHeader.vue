@@ -83,7 +83,7 @@ export default {
       this.$router.push("/Login");
     },
     handleCommand(command) {
-      if (command === "Logout") {
+      if (command === "logout") {
         logout().then(
           () => {
             localStorage.removeItem("token");
@@ -93,7 +93,6 @@ export default {
         );
       } else {
         if (command === "1") {
-          console.log(navigator.language);
           this.$i18n.locale = navigator.language;
         } else {
           localStorage.setItem("lang", command);

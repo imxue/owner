@@ -33,7 +33,7 @@
     "Save":"保存",
     "Close":"关闭",
     "Modify":"修改",
-    "InputFranchiseePhone":"输入加盟商手机",
+    "InputFranchiseeAccount":"输入加盟商账号",
     "ConfirmFranchiseePhone":"确认加盟商手机",
     "SubmitEscrowApplication":"提交托管申请",
     "FranchiseeConfirmsHosting":"加盟商确认托管",
@@ -46,7 +46,7 @@
     "CafeToConfirm":"网吧的托管申请，可尝试与加盟商联系完成托管操作",
     "ReturnIndex":"返回首页",
     "InformationSub":"信息提交",
-    "PhoneVerification":"手机验证",
+    "PhoneVerification":"验证",
     "ResetPassword":"重置密码",
     "ResetSuccessfully":"重置成功",
     "VerificationCode":"验证码",
@@ -158,5 +158,10 @@
     "Account":"账号",
     "MobileorEmail": "手机或邮箱",
     "pleaseInputAdress":"请输入详细地址",
-    "pleaseInputTelphone":"请输入联系电话"
+    "pleaseInputTelphone":"请输入联系电话",
+    "disable":"禁用",
+    "enable":"启用",
+    "ConfirmToRemove":"确认移除",
+    "More":"更多",
+    "Unbind":"解绑"
 }

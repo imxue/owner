@@ -34,7 +34,7 @@
 "Save": "Save",
 "Close": "Close",
 "Modify": "Ok",
-"InputFranchiseePhone": "Input Agent's Phone No.",
+"InputFranchiseeAccount": "Input Agent's Account.",
 "ConfirmFranchiseePhone": "Confirm",
 "SubmitEscrowApplication": "Apply",
 "FranchiseeConfirmsHosting": "Agree Application",
@@ -93,5 +93,8 @@
 "pleaseInputTelphone":"please Input Telphone",
 "pleaseBarName": "please Bar Name",
 "TheSMSfailed": "The SMS send failed",
-"Logout": "Logout"
+"Logout": "Logout",
+"disable": "Disable",
+"enable": "Enable",
+"ConfirmToRemove":"Confirm To Remove"
 }

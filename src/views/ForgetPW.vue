@@ -21,20 +21,18 @@
         <el-form-item
           prop="phone"
           :label="this.$t('PhoneNumber')"
-          label-width="80px"
+          label-width="180px"
           id="sendCode"
         >
-          <el-row>
-            <el-col :span="16">
-              <el-input
-                prefix-icon="el-icon-edit"
-                type="text"
-                v-model="ruleForm.phone"
-                autocomplete="on"
-                :placeholder="this.$t('PhoneNumber')"
-                autofocus="true"
-              ></el-input>
-            </el-col>
+          <el-row style="display:flex">
+            <el-input
+              prefix-icon="el-icon-edit"
+              type="text"
+              v-model="ruleForm.phone"
+              autocomplete="on"
+              :placeholder="this.$t('PhoneNumber')"
+              autofocus="true"
+            ></el-input>
             <el-button id="sendCode" @click="sendMsg" :disabled="isDisabled">{{
               buttonName
             }}</el-button>
@@ -43,7 +41,7 @@
         <el-form-item
           prop="VerifyCode"
           :label="this.$t('VerificationCode')"
-          label-width="80px"
+          label-width="180px"
           :rules="[{ required: true, message: this.$t('NotEmpty') }]"
         >
           <el-input
@@ -75,8 +73,6 @@
               type="text"
               v-model="ruleForm1.password"
               autocomplete="on"
-              placeholder="登录密码"
-              autofocus="true"
               :rules="[{ required: true, message: this.$t('NotEmpty') }]"
             ></el-input>
           </el-form-item>

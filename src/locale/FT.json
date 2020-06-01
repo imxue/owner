@@ -33,7 +33,7 @@
     "Save":"保存",
     "Close":"關閉",
     "Modify":"修改",
-    "InputFranchiseePhone":"輸入加盟商手機",
+    "InputFranchiseeAccount":"輸入加盟商賬號",
     "ConfirmFranchiseePhone":"確認加盟商手機",
     "SubmitEscrowApplication":"提交託管申請",
     "FranchiseeConfirmsHosting":"加盟商確認託管",
@@ -158,5 +158,8 @@
     "emailTip": "請點擊鏈接，完成註冊",
     "MobileorEmail": "手機或者郵箱",
     "pleaseInputAdress": "請輸入詳細地址",
-    "pleaseInputTelphone": "請輸入聯繫電話"
+    "pleaseInputTelphone": "請輸入聯繫電話",
+    "disable": "禁用",
+    "enable": "啟用",
+    "ConfirmToRemove": "確認移除"
 }

@@ -3,7 +3,7 @@
     <el-header>
       <baseHeader />
     </el-header>
-    <el-main>
+    <el-main style="overflow: inherit;">
       <el-row :gutter="24" class="flexContainer">
         <el-col>
           <el-card>
@@ -70,6 +70,7 @@
             fit
             stripe
             border
+            size="mini"
             v-loading="loading"
             :cell-style="objStyle"
           >
@@ -110,12 +111,32 @@
               align="center"
             ></el-table-column>
             <el-table-column
-              prop="remaining_days"
+              prop="diskless_expiration"
               :label="this.$t('TheRemainingNumberOfDays')"
+              sortable
+              min-width="110px"
+              align="center"
+            >
+              <template slot-scope="scope">
+                {{ formatTime(scope.row.diskless_expiration) }}
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="enable"
+              :label="this.$t('enable')"
               sortable
               min-width="60px"
               align="center"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <template v-if="scope.row.enable === 1">
+                  <el-tag type="success">{{ $t("enable") }}</el-tag>
+                </template>
+                <template v-if="scope.row.enable === 0">
+                  <el-tag type="danger">{{ $t("disable") }}</el-tag>
+                </template>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="operation"
               :label="this.$t('Operating')"
@@ -129,47 +150,38 @@
                   type="primary"
                   size="mini"
                   @click="handleClick(scope.row)"
-                  v-if="!scope.row.agent_name"
-                  >{{ $t("HostedInternetCafe") }}</el-button
-                >
+                  :disabled="scope.row.agent_name !== '' || scope.row.enable === 0"
+                  >{{ $t("HostedInternetCafe") }}
+                </el-button>
                 <el-button
-                  type="info"
+                  type="primary"
                   size="mini"
-                  @click="handleCancle(scope.row)"
-                  v-if="scope.row.agent_name"
-                  >{{ $t("CancelInternetCafe") }}</el-button
-                >
-                <el-popover
-                  placement="top"
-                  width="160"
-                  trigger="manual"
-                  :ref="'x-' + scope.row.bar_id"
-                >
-                  <p>{{ $t("ConfirmToDelete") }}</p>
-                  <div style="text-align: right; margin: 0">
-                    <el-button
-                      size="mini"
-                      type="text"
-                      @click="pClose(scope.row.bar_id)"
-                      >{{ $t("Cancel") }}</el-button
+                  style="marginRight:4px;"
+                  @click="handleEnable(scope.row)"
+                  :disabled="scope.row.enable === 1"
+                  >{{ $t("enable") }}
+                </el-button>
+                <el-dropdown split-button size="mini">
+                  <span size="mini">
+                    {{ $t("More") }}
+                  </span>
+                  <el-dropdown-menu slot="dropdown" trigger="click">
+                    <el-dropdown-item
+                      :disabled="!scope.row.agent_name"
+                      @click.native="handleCancle(scope.row.bar_id)"
+                      >{{ $t("CancelInternetCafe") }}</el-dropdown-item
                     >
-                    <el-button
-                      type="primary"
-                      size="mini"
-                      @click="handleDele(scope.row)"
-                      >{{ $t("Confirm") }}</el-button
+                    <el-dropdown-item
+                      :disabled="!scope.row.enable"
+                      @click.native="handleDele(scope.row)"
                     >
-                  </div>
-                  <el-button
-                    style="margin-left: 10px"
-                    slot="reference"
-                    @click="pOpen(scope.row.bar_id)"
-                    type="primary"
-                    size="mini"
-                    v-if="!scope.row.agent_name"
-                    >{{ $t("Delete") }}</el-button
-                  >
-                </el-popover>
+                      {{ $t("disable") }}
+                    </el-dropdown-item>
+                    <el-dropdown-item @click.native="handlebind(scope.row)">{{
+                      $t("Unbind")
+                    }}</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </template>
             </el-table-column>
           </el-table>
@@ -354,10 +366,12 @@ import {
   getAllBar,
   getBaseBarInfo,
   cancelTrustNetbar,
-  DeleteBar,
+  disable,
+  enable,
   getAddress,
   createBar,
   editBar,
+  unbind,
   changePassword
 } from "@/api/Default";
 import baseHeader from "../components/baseHeader.vue";
@@ -410,6 +424,8 @@ export default {
         tobe_trusted_bar_count: 0
       },
       pageinfo: {},
+      limit: 10,
+      offset: 0,
       tableData: [],
       visible: false,
       rules: {
@@ -491,7 +507,11 @@ export default {
   async created() {
     this.loading = true;
     await this.getArea();
-    this.getpageinfo({ offset: 0, limit: 10, orderby: "create_time" });
+    this.getpageinfo({
+      offset: this.offset,
+      limit: this.limit,
+      orderby: "create_time"
+    });
   },
   methods: {
     async getArea() {
@@ -505,6 +525,21 @@ export default {
           message: `${error}`
         });
       }
+    },
+    formatTime(val) {
+      const date = new Date(val);
+      const Y = `${date.getFullYear()}-`;
+      const M = `${
+        date.getMonth() + 1 < 10
+          ? `0${date.getMonth() + 1}`
+          : date.getMonth() + 1
+      }-`;
+      const D = `${date.getDate()} `;
+      const h = `${date.getHours()}:`;
+      const m = `${date.getMinutes()}:`;
+      const s = date.getSeconds();
+      const str = Y + M + D + h + m + s;
+      return str;
     },
     getarea(arr, id) {
       var tempArr = []; // 临时数组
@@ -563,12 +598,8 @@ export default {
         query: { barid: id, name: data.bar_name }
       });
     },
-    // refrsh() {
-    //   this.getpageinfo({ offset: 0, limit: 10, orderby: "create_time" });
-    // },
-
     handleCancle(id) {
-      cancelTrustNetbar(id.bar_id)
+      cancelTrustNetbar(id)
         .then(
           () => {
             this.$message({
@@ -581,15 +612,18 @@ export default {
           }
         )
         .finally(() => {
-          this.getpageinfo({ offset: 0, limit: 9, orderby: "create_time" });
+          this.getpageinfo({
+            offset: this.offset,
+            limit: this.limit,
+            orderby: "create_time"
+          });
         });
     },
     /**
-     * 删除网吧
+     * 禁用网吧
      */
     handleDele(id) {
-      this.$refs[`x-${id.bar_id}`].doClose();
-      DeleteBar(id.bar_id)
+      disable({ barid: id.bar_id })
         .then(
           () => {
             this.$message({
@@ -600,15 +634,63 @@ export default {
           () => {}
         )
         .finally(() => {
-          this.getpageinfo({ offset: 0, limit: 9, orderby: "create_time" });
+          this.getpageinfo({
+            offset: this.offset,
+            limit: this.limit,
+            orderby: "create_time"
+          });
+        });
+    },
+    handlebind(id) {
+      unbind({ barid: id.bar_id })
+        .then(
+          () => {
+            this.$message({
+              type: "success",
+              message: `sucess`
+            });
+          },
+          e => {
+            this.$message({
+              type: "error",
+              message: `${e.error}`
+            });
+          }
+        )
+        .finally(() => {
+          this.getpageinfo({
+            offset: this.offset,
+            limit: this.limit,
+            orderby: "create_time"
+          });
+        });
+    },
+    handleEnable(id) {
+      enable({ barid: id.bar_id })
+        .then(
+          () => {
+            this.$message({
+              type: "success",
+              message: `sucess`
+            });
+          },
+          () => {}
+        )
+        .finally(() => {
+          this.getpageinfo({
+            offset: this.offset,
+            limit: this.limit,
+            orderby: "create_time"
+          });
         });
     },
     handleCurrentChange(e) {
       let info = {
-        offset: (Number(e) - 1) * 9,
-        limit: 9,
+        offset: (Number(e) - 1) * this.limit,
+        limit: this.limit,
         orderby: "create_time"
       };
+      this.offset = info.offset;
       this.handlegetAllBar(info);
     },
     handlegetAllBar(info) {
@@ -652,7 +734,6 @@ export default {
     },
     goCreatePage() {
       this.CreateCafeVisible = true;
-      // this.$router.push("/CreateBar");
     },
     handleEdit(data) {
       this.pass = {

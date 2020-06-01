@@ -9,10 +9,6 @@
           <p>{{ $t("UserLogin") }}</p>
           <el-dropdown style="" @command="handleCommand" trigger="click">
             <span class="el-dropdown-link">
-              <!-- <i
-                class="el-icon-monitor"
-                style="color:white;font-size:22px;padding-bottom:12px;"
-              ></i> -->
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-language"></use>
               </svg>

@@ -6,7 +6,7 @@
     <div class="box">
       <transition name="fade">
         <span v-bind:class="{ active: phoneVerification }"
-          >1.{{ $t("InputFranchiseePhone") }}</span
+          >1.{{ $t("InputFranchiseeAccount") }}</span
         >
       </transition>
       <span v-bind:class="{ active: userInfo }"
