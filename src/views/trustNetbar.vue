@@ -31,7 +31,7 @@
           </el-form-item>
         </el-form>
 
-        <div class="Rowfooter">
+        <div class="Rowfooter" style="text-align:center;">
           <el-button
             type="primary"
             v-on:click="HandleNext"
@@ -53,13 +53,15 @@
           <el-form-item :label="this.$t('FranchiseeName')">
             <el-input v-model="form.name" disabled></el-input>
           </el-form-item>
+          <el-form-item>
+            <el-button type="primary" v-on:click="Handlesubmit">
+              {{ $t("InformationSub") }}
+            </el-button>
+            <el-button type="primary" v-on:click="HandleBack">
+              {{ $t("ReturnLogin") }}
+            </el-button>
+          </el-form-item>
         </el-form>
-        <el-button type="primary" v-on:click="Handlesubmit">
-          {{ $t("InformationSub") }}
-        </el-button>
-        <el-button type="primary" v-on:click="HandleBack">
-          {{ $t("ReturnLogin") }}
-        </el-button>
       </div>
     </div>
     <div v-show="apply" class="footer">

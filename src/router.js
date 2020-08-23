@@ -10,6 +10,11 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
+      path: "/Login",
+      name: "Login",
+      component: Login
+    },
+    {
       path: "/",
       name: "Detail",
       component: () => import("./views/Detail.vue")
@@ -18,11 +23,6 @@ export default new Router({
       path: "/Enroll",
       name: "Enroll",
       component: Enroll
-    },
-    {
-      path: "/Login",
-      name: "Login",
-      component: Login
     },
     {
       path: "/trustNetbar",

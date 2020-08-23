@@ -190,3 +190,10 @@ export const validMail = data =>
     method: "post",
     data
   });
+///admin/oem/getall
+
+export const getOem = () =>
+  request({
+    url: "/admin/oem/getallenabled",
+    method: "get"
+  });

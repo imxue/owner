@@ -89,6 +89,7 @@
     "12":"获取加盟商管辖区域为空",
     "9":"网吧已托管，无法再次进行托管",
     "7":"网吧业主为空，无法托管网吧",
+    "1":"系统错误",
     "PleaseCheckTheSMS":"请查收短信",
     "pleaseBarName": "请输入网吧名称",
     "TheSMSfailed":"短信发送失败",
@@ -149,7 +150,7 @@
     "RechargeSucess": "充值成功",
     "Logout": "登出",
     "UserReg": "用户注册",
-    "tip1":"创建成功 - 将在三秒后跳回登录页面",
+    "tip1":"创建成功 - 返回跳回登录页面",
     "getvalidPhonefail": "获取验证码失败，请稍后重试",
     "Create":"创建",
     "Reset":"重置",
@@ -163,5 +164,11 @@
     "enable":"启用",
     "ConfirmToRemove":"确认移除",
     "More":"更多",
-    "Unbind":"解绑"
+    "Unbind":"解绑",
+    "Oem":"渠道",
+    "UserNotLogin":"用户未登录",
+    "UserNotTime":"用户登录超时",
+    "Notauth":"权限不足！请联系上级代理商",
+    "pleaseInput":"请输入",
+    "Welcome":"欢迎"
 }

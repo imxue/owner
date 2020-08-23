@@ -6,9 +6,12 @@
 
 <script>
 export default {
-  name: "app"
-};</script
->>
+  name: "app",
+  created() {
+    document.title = this.$t("OwnerPlatform");
+  }
+};
+</script>
 
 <style lang="scss">
 * {
@@ -22,13 +25,11 @@ body {
   padding: 0;
   height: 100%;
 }
+
 #app {
   height: 100%;
   .el-input {
     cursor: text;
-  }
-  .el-dialog {
-    max-width: 550px;
   }
 }
 </style>

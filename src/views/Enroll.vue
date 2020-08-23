@@ -52,7 +52,11 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" v-on:click="HandleNext">
+          <el-button
+            type="primary"
+            v-on:click="HandleNext"
+            loading="NextLoading"
+          >
             {{ $t("Next") }}
           </el-button>
           <el-button v-on:click="HandleBack">{{ $t("ReturnLogin") }}</el-button>
@@ -121,9 +125,12 @@
             </el-cascader>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" v-on:click="HandleNextSucess">{{
-              $t("Next")
-            }}</el-button>
+            <el-button
+              type="primary"
+              v-on:click="HandleNextSucess"
+              loading="NextLoading"
+              >{{ $t("Next") }}</el-button
+            >
             <el-button v-on:click="HandleBack">
               {{ $t("ReturnLogin") }}
             </el-button>
@@ -198,6 +205,7 @@ export default {
         phone: "",
         VerifyCode: ""
       },
+      NextLoading: false,
       ruleForm2: {
         password: "",
         confirePassword: "",
@@ -235,20 +243,25 @@ export default {
     HandleNext() {
       let that = this;
       this.$refs["ruleForm"].validate(valid => {
+        this.NextLoading = true;
         if (valid) {
-          validVerifyCode(this.ruleForm).then(
-            response => {
-              if (response.data.ok || this.ruleForm.VerifyCode === "8888") {
-                that.phoneVerification = false;
-                that.userInfo = true;
+          validVerifyCode(this.ruleForm)
+            .then(
+              response => {
+                if (response.data.ok || this.ruleForm.VerifyCode === "8888") {
+                  that.phoneVerification = false;
+                  that.userInfo = true;
+                }
+              },
+              response => {
+                this.$message({
+                  message: response.data.error
+                });
               }
-            },
-            response => {
-              this.$message({
-                message: response.data.error
-              });
-            }
-          );
+            )
+            .finally(() => {
+              this.NextLoading = false;
+            });
         }
       });
     },
@@ -315,7 +328,6 @@ export default {
         let temp = x.data.data;
         this.ruleForm2.SelectRegion = this.test1(temp);
       } catch (e) {
-        console.log(e);
         this.$message.error(e.data.error);
       }
     },
@@ -383,6 +395,12 @@ export default {
   }
   .active {
     border-bottom: 4px solid #3aa79d;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .Enroll {
+    background: red;
   }
 }
 </style>

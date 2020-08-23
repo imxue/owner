@@ -1,20 +1,26 @@
 <template>
   <div class="container">
-    <el-row>
-      <el-col
-        :lg="{ span: 14, offset: 4 }"
-        :md="{ span: 5, offset: 1 }"
-        :sm="{ span: 10, offset: 1 }"
-        :xs="{ span: 8, offset: 0 }"
-      >
+    <div style="display:flex;justify-content: space-between;">
+      <div>
         <span @click="goindex">{{ $t("OwnerPlatform") }}</span>
-      </el-col>
-      <el-col
-        :lg="{ span: 2, offset: 0 }"
-        :md="{ span: 5, offset: 13 }"
-        :sm="{ span: 4, offset: 0 }"
-        :xs="{ span: 8, offset: 0 }"
-      >
+      </div>
+      <div class="left">
+        <span style="color:black;">{{ $t("Welcome") }}：</span>
+        <span>{{ user.user_name }}</span>
+        <span style="margin-left:10px;"> | </span>
+        <el-dropdown @command="handleCommand" trigger="click">
+          <span class="el-dropdown-link" style="margin-right:20px;">
+            <i
+              class="el-icon-user"
+              style="color:green; margin-left:18px;font-size:20px;"
+            ></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="logout">
+              {{ $t("Logout") }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <i
           class="el-icon-bell"
           style="color:green; margin-right:30px;font-size:20px;"
@@ -33,21 +39,8 @@
             <el-dropdown-item divided command="1">默认</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-dropdown @command="handleCommand" trigger="click">
-          <span class="el-dropdown-link">
-            <i
-              class="el-icon-user"
-              style="color:green; margin-left:18px;font-size:20px;"
-            ></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="logout">
-              {{ $t("Logout") }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <el-dialog
       title="用户信息"
       :visible.sync="centerDialogVisible"
@@ -66,12 +59,23 @@
 
 <script>
 import { logout } from "@/api/Default";
+import checkAuthority from "../util/Authority";
 export default {
-  name: "header",
+  name: "Myheader",
   data() {
     return {
-      centerDialogVisible: false
+      centerDialogVisible: false,
+      user: {}
     };
+  },
+  created() {
+    try {
+      this.user = JSON.parse(checkAuthority(localStorage.getItem("token")));
+    } catch (error) {
+      this.user = {
+        user_name: "UNKONW"
+      };
+    }
   },
   methods: {
     goindex() {
@@ -98,6 +102,7 @@ export default {
           localStorage.setItem("lang", command);
           this.$i18n.locale = command;
         }
+        document.title = this.$t("OwnerPlatform");
       }
     }
   }
@@ -111,6 +116,12 @@ export default {
   line-height: 60px;
   span:hover {
     cursor: pointer;
+  }
+  .left {
+    span {
+      font-size: 16px;
+      color: green;
+    }
   }
   el-dialog {
     border-radius: 20px;

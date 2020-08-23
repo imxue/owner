@@ -1,6 +1,7 @@
 import axios from "axios";
-import { Message } from "element-ui";
+import i18n from "../locale/index";
 import router from "../router";
+import { MessageBox } from "element-ui";
 axios.defaults.withCredentials = true;
 const service = axios.create({
   baseURL: "/",
@@ -22,15 +23,23 @@ service.interceptors.response.use(
     }
   },
   error => {
-    Message({
-      showClose: true,
-      type: "error",
-      duration: 2 * 1000,
-      message: error.response.data
-    });
+    if (error.response.status === 403) {
+      MessageBox.alert(i18n.t("UserNotTime"), {
+        confirmButtonText: i18n.t("Confirm"),
+        type: "error"
+      }).then(() => {
+        localStorage.removeItem("token");
+        router.push("/Login");
+      });
+    }
     if (error.response.status === 401) {
-      localStorage.removeItem("token");
-      router.push("/Login");
+      MessageBox.alert(i18n.t("Notauth"), {
+        confirmButtonText: i18n.t("Confirm"),
+        type: "error"
+      }).then(() => {
+        localStorage.removeItem("token");
+        router.push("/Login");
+      });
     }
     return Promise.reject(error);
   }

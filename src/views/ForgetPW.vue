@@ -1,8 +1,9 @@
 <template>
   <div class="Enroll">
-    <el-header>
+    <div style="border-bottom: 1px solid #3aa79d;">
       <baseHeader />
-    </el-header>
+    </div>
+
     <div class="box">
       <transition name="fade">
         <span v-bind:class="{ active: phoneVerification }"
@@ -119,18 +120,18 @@ import baseHeader from "../components/baseHeader.vue";
 export default {
   name: "forgetPW",
   data() {
-    var checkPhone = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error(this.$t("NotEmpty")));
-      } else {
-        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
-        if (reg.test(value)) {
-          callback();
-        } else {
-          return callback(new Error("请输入正确手机号"));
-        }
-      }
-    };
+    // var checkPhone = (rule, value, callback) => {
+    //   if (!value) {
+    //     return callback(new Error(this.$t("NotEmpty")));
+    //   } else {
+    //     const reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
+    //     if (reg.test(value)) {
+    //       callback();
+    //     } else {
+    //       return callback(new Error("请输入正确手机号"));
+    //     }
+    //   }
+    // };
     var checkpassword = (rule, value, callback) => {
       if (!this.ruleForm1.password) {
         return callback(new Error(this.$t("NotEmpty")));
@@ -157,7 +158,9 @@ export default {
         confirePassowrd: ""
       },
       rules: {
-        phone: [{ required: true, validator: checkPhone, trigger: "blur" }]
+        phone: [
+          { required: true, message: this.$t("NotEmpty"), trigger: "blur" }
+        ]
       },
       rules1: {
         password: [{ required: true, message: this.$t("NotEmpty") }],
@@ -193,36 +196,36 @@ export default {
         }
       });
     },
-    Check(value) {
-      if (!value) {
-        return 0;
-      } else {
-        const Email = /^([A-Za-z0-9_\-\\.\u4e00-\u9fa5])+\\@([A-Za-z0-9_\-\\.])+\.([A-Za-z]{2,8})$/;
-        const phone = /^1[3|4|5|7|8][0-9]\d{8}$/;
-        if (Email.test(value)) {
-          return "Email";
-        } else if (phone.test(value)) {
-          return "phone";
-        } else {
-          return 1;
-        }
-      }
-    },
-    test() {
-      let re = this.Check(this.ruleForm.phone);
-      if (re === "Email") {
-        // email
-      } else if (re === "phone") {
-        // 手机验证
-        getVerifyCode(this.ruleForm.phone).then(e => {
-          console.log(e);
-        });
-      } else if (re === 1) {
-        // 格式不正确
-      } else if (re === 0) {
-        //
-      }
-    },
+    // Check(value) {
+    //   if (!value) {
+    //     return 0;
+    //   } else {
+    //     const Email = /^([A-Za-z0-9_\-\\.\u4e00-\u9fa5])+\\@([A-Za-z0-9_\-\\.])+\.([A-Za-z]{2,8})$/;
+    //     const phone = /^1[3|4|5|7|8][0-9]\d{8}$/;
+    //     if (Email.test(value)) {
+    //       return "Email";
+    //     } else if (phone.test(value)) {
+    //       return "phone";
+    //     } else {
+    //       return 1;
+    //     }
+    //   }
+    // },
+    // test() {
+    //   let re = this.Check(this.ruleForm.phone);
+    //   if (re === "Email") {
+    //     // email
+    //   } else if (re === "phone") {
+    //     // 手机验证
+    //     getVerifyCode(this.ruleForm.phone).then(e => {
+    //       console.log(e);
+    //     });
+    //   } else if (re === 1) {
+    //     // 格式不正确
+    //   } else if (re === 0) {
+    //     //
+    //   }
+    // },
     HandleNextSucess() {
       this.$refs["ruleForm1"].validate(valid => {
         if (valid) {

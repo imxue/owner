@@ -76,27 +76,21 @@ export default {
       );
     },
     sendMsg() {
-      console.log(1);
       const me = this;
       if (me.mobilephone) {
-        getVerifyCode({ mobilephone: me.mobilephone }).then(
-          () => {
-            me.isDisabled = true;
-            const interval = window.setInterval(() => {
-              me.buttonName = `（${me.time}秒）`;
-              this.time = this.time - 1;
-              if (me.time < 0) {
-                me.buttonName = "重新发送验证码";
-                me.time = 60;
-                me.isDisabled = false;
-                window.clearInterval(interval);
-              }
-            }, 1000);
-          },
-          e => {
-            console.log(e);
-          }
-        );
+        getVerifyCode({ mobilephone: me.mobilephone }).then(() => {
+          me.isDisabled = true;
+          const interval = window.setInterval(() => {
+            me.buttonName = `（${me.time}秒）`;
+            this.time = this.time - 1;
+            if (me.time < 0) {
+              me.buttonName = "重新发送验证码";
+              me.time = 60;
+              me.isDisabled = false;
+              window.clearInterval(interval);
+            }
+          }, 1000);
+        });
 
         // start
         // const me = this;

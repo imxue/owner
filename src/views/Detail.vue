@@ -1,203 +1,188 @@
 <template>
-  <el-container>
-    <el-header>
+  <div class="container">
+    <div class="myHeader">
       <baseHeader />
-    </el-header>
-    <el-main style="overflow: inherit;">
-      <el-row :gutter="24" class="flexContainer">
-        <el-col>
-          <el-card>
-            <div>
-              <h1>{{ baseBarInfo.online_bar_count }}</h1>
-              <p>{{ $t("NumberOfOnlineCafe") }}</p>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :lg="{ span: 10 }" :sm="12">
-          <el-card>
-            <div>
-              <h1>{{ baseBarInfo.total_bar_count }}</h1>
-              <p>{{ $t("TotalNumberOfInternetCafes") }}</p>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-      <el-row :gutter="24" class="marginTop">
-        <el-col :lg="{ span: 6 }" :md="{ span: 6 }" :sm="12">
-          <el-card>
-            <div>
-              <h4>{{ baseBarInfo.trusted_bar_count }}</h4>
-              <p>{{ $t("NumberOfInternetCafesAlreadyHosted") }}</p>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :lg="{ span: 6 }" :md="{ span: 5 }" :sm="12">
-          <el-card>
-            <div>
-              <h4>{{ baseBarInfo.tobe_trusted_bar_count }}</h4>
-              <p>{{ $t("NumberOfInternetCafesToBeHosted") }}</p>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :lg="{ span: 6 }" :md="{ span: 6 }" :sm="12">
-          <el-card>
-            <div>
-              <h4>{{ baseBarInfo.online_bar_online_client_count }}</h4>
-              <p>{{ $t("NumberOfOnlineTerminalsInOnlineCafes") }}</p>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :lg="{ span: 6 }" :md="{ span: 6 }" :sm="12">
-          <el-card>
-            <div>
-              <h4>{{ baseBarInfo.online_bar_client_count }}</h4>
-              <p>{{ $t("NumberOfOnlineInternetCafeManagementTerminals") }}</p>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-      <el-col>
-        <el-row class="middle">
-          <el-button type="primary" v-on:click="goCreatePage">
-            {{ $t("CreateCafe") }}
-          </el-button>
-          <!-- <el-button plain v-on:click="refrsh">{{ $t("Refresh") }}</el-button> -->
-        </el-row>
+    </div>
+    <div style="overflow: inherit;margin-Top:60px;">
+      <div style="marginTop:70px;display:flex;justify-content: space-between;">
+        <el-card>
+          <div>
+            <h4>{{ baseBarInfo.online_bar_count }}</h4>
+            <p>{{ $t("NumberOfOnlineCafe") }}</p>
+          </div>
+        </el-card>
 
-        <el-col>
-          <el-table
-            :data="tableData"
-            fit
-            stripe
-            border
-            size="mini"
-            v-loading="loading"
-            :cell-style="objStyle"
-          >
-            <el-table-column
-              prop="state"
-              :label="this.$t('Status')"
-              width="100"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="bar_id"
-              :label="this.$t('CafeID')"
-              width="100"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="bar_name"
-              :label="this.$t('CafeName')"
-              align="center"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="address_detail"
-              :label="this.$t('Area')"
-              align="center"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="online_client_count"
-              :label="this.$t('NumberOfOnline/managementTerminals')"
-              align="center"
-              minWidth="110px"
-            ></el-table-column>
-            <el-table-column
-              prop="agent_name"
-              :label="this.$t('Franchisee')"
-              min-width="50px"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="diskless_expiration"
-              :label="this.$t('TheRemainingNumberOfDays')"
-              sortable
-              min-width="110px"
-              align="center"
+        <el-card>
+          <div>
+            <h4>{{ baseBarInfo.total_bar_count }}</h4>
+            <p>{{ $t("TotalNumberOfInternetCafes") }}</p>
+          </div>
+        </el-card>
+
+        <el-card>
+          <div>
+            <h4>{{ baseBarInfo.trusted_bar_count }}</h4>
+            <p>{{ $t("NumberOfInternetCafesAlreadyHosted") }}</p>
+          </div>
+        </el-card>
+
+        <el-card>
+          <div>
+            <h4>{{ baseBarInfo.tobe_trusted_bar_count }}</h4>
+            <p>{{ $t("NumberOfInternetCafesToBeHosted") }}</p>
+          </div>
+        </el-card>
+
+        <el-card>
+          <div>
+            <h4>{{ baseBarInfo.online_bar_online_client_count }}</h4>
+            <p>{{ $t("NumberOfOnlineTerminalsInOnlineCafes") }}</p>
+          </div>
+        </el-card>
+
+        <el-card>
+          <div>
+            <h4>{{ baseBarInfo.online_bar_client_count }}</h4>
+            <p>{{ $t("NumberOfOnlineInternetCafeManagementTerminals") }}</p>
+          </div>
+        </el-card>
+      </div>
+
+      <el-row class="middle">
+        <el-button
+          type="primary"
+          style="margin:10px 0;"
+          v-on:click="goCreatePage"
+        >
+          {{ $t("CreateCafe") }}
+        </el-button>
+      </el-row>
+
+      <el-table :data="tableData" fit stripe size="mini" v-loading="loading">
+        <el-table-column
+          prop="state"
+          :label="this.$t('Status')"
+          width="100"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="bar_id"
+          :label="this.$t('CafeID')"
+          width="100"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="bar_name"
+          :label="this.$t('CafeName')"
+          align="center"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="address_detail"
+          :label="this.$t('Area')"
+          align="center"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="online_client_count"
+          :label="this.$t('NumberOfOnline/managementTerminals')"
+          align="center"
+          minWidth="110px"
+        ></el-table-column>
+        <el-table-column
+          prop="agent_name"
+          :label="this.$t('Franchisee')"
+          min-width="50px"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="diskless_expiration"
+          :label="this.$t('TheRemainingNumberOfDays')"
+          sortable
+          min-width="110px"
+          align="center"
+        >
+          <template slot-scope="scope">
+            {{ formatTime(scope.row.diskless_expiration) }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="enable"
+          :label="this.$t('enable')"
+          sortable
+          min-width="60px"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <template v-if="scope.row.enable === 1">
+              <el-tag type="success">{{ $t("enable") }}</el-tag>
+            </template>
+            <template v-if="scope.row.enable === 0">
+              <el-tag type="danger">{{ $t("disable") }}</el-tag>
+            </template>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="operation"
+          :label="this.$t('Operating')"
+          min-width="110px"
+        >
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              @click="handleEdit(scope.row)"
+              style="marginRight:10px;"
             >
-              <template slot-scope="scope">
-                {{ formatTime(scope.row.diskless_expiration) }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="enable"
-              :label="this.$t('enable')"
-              sortable
-              min-width="60px"
-              align="center"
-            >
-              <template slot-scope="scope">
-                <template v-if="scope.row.enable === 1">
-                  <el-tag type="success">{{ $t("enable") }}</el-tag>
-                </template>
-                <template v-if="scope.row.enable === 0">
-                  <el-tag type="danger">{{ $t("disable") }}</el-tag>
-                </template>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="operation"
-              :label="this.$t('Operating')"
-              min-width="200px"
-            >
-              <template slot-scope="scope">
-                <el-button size="mini" @click="handleEdit(scope.row)">
-                  {{ $t("Edit") }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="mini"
-                  @click="handleClick(scope.row)"
-                  :disabled="scope.row.agent_name !== '' || scope.row.enable === 0"
-                  >{{ $t("HostedInternetCafe") }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="mini"
-                  style="marginRight:4px;"
-                  @click="handleEnable(scope.row)"
-                  :disabled="scope.row.enable === 1"
-                  >{{ $t("enable") }}
-                </el-button>
-                <el-dropdown split-button size="mini">
-                  <span size="mini">
-                    {{ $t("More") }}
-                  </span>
-                  <el-dropdown-menu slot="dropdown" trigger="click">
-                    <el-dropdown-item
+              {{ $t("Edit") }}
+            </el-button>
+            <el-dropdown split-button size="mini">
+              <span size="mini">
+                {{ $t("More") }}
+              </span>
+              <el-dropdown-menu slot="dropdown" trigger="click">
+                <!-- <el-dropdown-item
                       :disabled="!scope.row.agent_name"
                       @click.native="handleCancle(scope.row.bar_id)"
-                      >{{ $t("CancelInternetCafe") }}</el-dropdown-item
-                    >
-                    <el-dropdown-item
-                      :disabled="!scope.row.enable"
-                      @click.native="handleDele(scope.row)"
-                    >
-                      {{ $t("disable") }}
-                    </el-dropdown-item>
-                    <el-dropdown-item @click.native="handlebind(scope.row)">{{
-                      $t("Unbind")
-                    }}</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-col>
+                      >{{ $t("CancelInternetCafe") }}</el-dropdown-item> -->
+                <el-dropdown-item
+                  :disabled="scope.row.enable === 1"
+                  @click.native="handleEnable(scope.row)"
+                >
+                  {{ $t("enable") }}
+                </el-dropdown-item>
+                <el-dropdown-item
+                  :disabled="!scope.row.enable"
+                  @click.native="handleDele(scope.row)"
+                >
+                  {{ $t("disable") }}
+                </el-dropdown-item>
+                <el-dropdown-item
+                  :disabled="
+                    scope.row.agent_name !== '' || scope.row.enable === 0
+                  "
+                  @click.native="handleClick(scope.row)"
+                >
+                  {{ $t("HostedInternetCafe") }}
+                </el-dropdown-item>
+                <!-- <el-dropdown-item @click.native="handlebind(scope.row)">
+                      {{$t("Unbind")}}
+                    </el-dropdown-item> -->
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
+        </el-table-column>
+      </el-table>
 
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          @current-change="handleCurrentChange"
-          :current-page="Number(pageinfo.page_index)"
-          :page-size="9"
-          style=" float:right;"
-          :total="Number(pageinfo.count)"
-        ></el-pagination>
-      </el-col>
-    </el-main>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        @current-change="handleCurrentChange"
+        :current-page="Number(pageinfo.page_index)"
+        :page-size="this.limit"
+        style=" float:right;"
+        :total="Number(pageinfo.count)"
+      ></el-pagination>
+    </div>
     <!-- 編輯網吧 -->
     <el-dialog
       :title="this.$t('EditCafe')"
@@ -359,7 +344,7 @@
         >
       </div>
     </el-dialog>
-  </el-container>
+  </div>
 </template>
 <script>
 import {
@@ -424,6 +409,7 @@ export default {
         tobe_trusted_bar_count: 0
       },
       pageinfo: {},
+      channelList: [], // 渠道类别
       limit: 10,
       offset: 0,
       tableData: [],
@@ -498,13 +484,15 @@ export default {
       temp: {
         id: "",
         temp: ""
-      }
+      },
+      oemList: []
     };
   },
   components: {
     baseHeader
   },
   async created() {
+    // this.HanlegetOme();
     this.loading = true;
     await this.getArea();
     this.getpageinfo({
@@ -514,6 +502,17 @@ export default {
     });
   },
   methods: {
+    // async HanlegetOme() {
+    //   try {
+    //     let resp = await getOem();
+    //     this.oemList = resp.data.data;
+    //   } catch (error) {
+    //     this.$message({
+    //       type: "error",
+    //       message: `${error}`
+    //     });
+    //   }
+    // },
     async getArea() {
       try {
         let x = await getAddress();
@@ -563,7 +562,7 @@ export default {
     test1(array) {
       array.forEach(item => {
         Object.keys(item).forEach(key => {
-          if (item[key].constructor === Array) {
+          if (item[key] && item[key].constructor === Array) {
             item["children"] = item[key];
             delete item[key];
             this.test1(item["children"]);
@@ -709,7 +708,9 @@ export default {
             this.pageinfo = e.data.data.pageino;
           }
         },
-        () => {}
+        e => {
+          this.$message.error(e);
+        }
       );
     },
     getpageinfo(info) {
@@ -733,6 +734,13 @@ export default {
       this.centerDialogVisible = true;
     },
     goCreatePage() {
+      this.CreateCafe = {
+        bar_name: "",
+        password: "",
+        area_id: "",
+        address: "",
+        telphone: ""
+      };
       this.CreateCafeVisible = true;
     },
     handleEdit(data) {
@@ -846,20 +854,21 @@ export default {
 >>
 
 <style lang="scss" scoped>
-.el-container {
-  height: 100%;
-  .middle {
-    margin: 10px 0;
-  }
-  .el-main {
-    max-width: 1400px;
-    margin: auto;
-    width: 1400px;
+.container {
+  max-width: 1200px;
+  min-width: 1200px;
+  padding: 0 20px;
+  margin: 0 auto;
+  .myHeader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
   }
 }
-.el-header {
-  border-bottom: 1px solid #3aa79d;
-}
+
 .headerF {
   border: 1px solid #cccccc;
   text-align: center;
@@ -885,7 +894,6 @@ export default {
   align-items: stretch;
 }
 .is-hidden {
-  // display: none;
   position: absolute;
   left: -10000px;
   top: -10000px;

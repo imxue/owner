@@ -43,6 +43,7 @@
         </el-form-item>
         <el-form-item>
           <el-button
+            :loading="loading"
             type="primary"
             @click="submitForm('ruleForm')"
             style="width:100%; height:46px;"
@@ -51,10 +52,10 @@
         </el-form-item>
 
         <el-form-item class="footer">
-          <el-button type="primary" size="mini" @click="handleGoForgetPW">
+          <el-button type="text" size="mini" @click="handleGoForgetPW">
             {{ $t("ForgetPassword") }}
           </el-button>
-          <el-button type="primary" size="mini" @click="handleGoEnroll">
+          <el-button type="text" size="mini" @click="handleGoEnroll">
             {{ $t("RegisteredUser") }}
           </el-button>
         </el-form-item>
@@ -73,6 +74,7 @@ export default {
         Account: "",
         Password: ""
       },
+      loading: false,
       options: [
         {
           value: "owner",
@@ -83,11 +85,9 @@ export default {
       rules: {
         Account: [
           { required: true, message: this.$t("NotEmpty"), trigger: "blur" }
-          // { min: 3, max: 20, message: "长度在 3 到 15 个字符", trigger: "blur" }
         ],
         Password: [
           { required: true, message: this.$t("NotEmpty"), trigger: "blur" }
-          // { min: 3, max: 15, message: "长度在 3 到 15 个字符", trigger: "blur" }
         ]
       }
     };
@@ -101,36 +101,42 @@ export default {
         localStorage.setItem("lang", command);
         this.$i18n.locale = command;
       }
+      document.title = this.$t("OwnerPlatform");
     },
     submitForm(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
+          this.loading = true;
           this.ruleForm.platform = "owner";
-          login(this.ruleForm).then(
-            e => {
-              switch (e.data.code) {
-                case 0:
-                  localStorage.setItem("token", e.data.token);
-                  this.$router.push("/");
-                  break;
-                case 1:
-                  alert(e.data.error);
-                  break;
-                case 2:
-                  alert(e.data.error);
-                  break;
-                case 3:
-                  alert(e.data.error);
-                  break;
-                case 4:
-                  alert(e.data.error);
-                  break;
+          login(this.ruleForm)
+            .then(
+              e => {
+                switch (e.data.code) {
+                  case 0:
+                    localStorage.setItem("token", e.data.token);
+                    this.$router.push("/");
+                    break;
+                  case 1:
+                    alert(e.data.error);
+                    break;
+                  case 2:
+                    alert(e.data.error);
+                    break;
+                  case 3:
+                    alert(e.data.error);
+                    break;
+                  case 4:
+                    alert(e.data.error);
+                    break;
+                }
+              },
+              e => {
+                alert(e.data.error);
               }
-            },
-            e => {
-              alert(e.data.error);
-            }
-          );
+            )
+            .finally(() => {
+              this.loading = false;
+            });
         } else {
           return false;
         }
@@ -156,6 +162,7 @@ export default {
 .el-container {
   background: #3b4759;
   height: 100%;
+  min-width: 862px;
 }
 .el-header {
   background: #fff;

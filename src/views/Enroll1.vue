@@ -5,7 +5,6 @@
       center
       :modal="false"
       :close-on-click-modal="false"
-      width="35%"
       @close="close"
     >
       <transition name="component-fade" mode="out-in">
@@ -32,7 +31,6 @@ import EnrollOption from "../components/EnrollOption.vue";
 import EnrollEmail from "../components/EnrollEmail.vue";
 import EnrollPhone from "../components/EnrollPhone.vue";
 import Enroll from "../components/Enroll.vue";
-// import { checkEffectiveness } from '../utils/index';
 
 export default {
   name: "Enroll",
@@ -70,7 +68,6 @@ export default {
       this.view = this.viewoption.reg;
     }
   },
-
   components: {
     EnrollOption,
     EnrollEmail,
@@ -82,11 +79,12 @@ export default {
 <style lang="scss" scoped>
 .enrollWrapper {
   height: 100vh;
-  // background: linear-gradient(180deg, #EAEAEA, white);
   background: linear-gradient(90deg, #3b4759, #566377);
 }
-.el-dialog {
-  min-width: 450px;
+.enrollWrapper {
+  .el-dialog {
+    min-width: 450px !important;
+  }
 }
 .myHeader {
   line-height: 60px;
